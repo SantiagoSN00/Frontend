@@ -1,0 +1,68 @@
+
+.containers{
+    width: 100vw;
+    padding: 1rem;
+    margin: 0;
+}
+
+.banner{
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    height: 30vh;
+    background-image: url('../../../assets/images/wide_banner.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 150px;
+    img{
+        position: absolute;
+        left: 50px;
+        bottom: -100px;
+        vertical-align: bottom;
+        width: 200px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+    }
+}
+
+h1{
+    line-height: 120%;
+    font-size: 3rem;
+    font-weight: bold;
+}
+h3{
+    font-size: 1.5rem;
+}
+p{
+    font-size: 1rem;
+}
+
+.tech-container{
+    display: grid;
+    padding: 1rem;
+    box-shadow: 5px 10px #888888;
+    align-items: center;
+    gap: 2rem;
+    background-color: white;
+    box-shadow: 2rem ;
+    grid-template-columns:repeat(auto-fill, minmax(200px,1fr))
+}
+.tech-container > *{
+    width: 10rem;
+}
+.tech{
+    font-size: 2rem;
+    color:black;
+    display: inline;
+}
+.picsum-img-wrapper{
+    padding: 3rem;
+    
+}
+.picsum-img-wrapper > img{
+    display: flex;
+    justify-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10rem;
+}

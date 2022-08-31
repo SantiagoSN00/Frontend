@@ -1,0 +1,72 @@
+<div class="container">
+       
+    <div cdkDropList class="box parent-list" (cdkDropListDropped)="drop($event)">
+        <div class="box child-box" *ngFor="let pro of projects; let i = index" [attr.data-index]="i" cdkDrag>
+            
+            <div *ngIf="!edits[i];else content">
+
+            <div *ngIf="!edits[i]" (click)="editFn($event)">
+
+                
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class = "selectable edit" fontIcon="edit"></mat-icon>
+            </div>
+                
+            <div *ngIf="!edits[i]" (click)="delete($event)">
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class = "selectable delete" fontIcon="delete_forever"></mat-icon>
+            </div>
+            
+            <a href={{pro.link}}>{{pro.title}}</a>
+            <h5 >{{pro.body}}</h5>
+            <h4 *ngIf="pro.result;else noEnd">Completed!</h4>
+            <ng-template #noEnd>
+                <h5>Unfinished</h5>
+            </ng-template>
+        </div>
+    </div>
+
+        <div *ngIf="!add;else content" class="box button-box">
+            <button mat-mini-fab class="add-button" color="primary" (click)="addNew()">+</button>
+    </div>
+      </div>
+      
+      
+</div>
+
+<ng-template #content>
+    <form [formGroup]="form" (ngSubmit)="saveDetails(form,$event)">
+        <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput maxlength="30" inputmode="tel" placeholder="Type name" formControlName="name" #nameInput>
+            <mat-hint>Max character 30: {{ nameInput.value.length }}/30</mat-hint>
+            <mat-error>Name is required</mat-error>
+            <mat-error *ngIf="form.controls['name'].errors?.['minlength']">
+                Please enter a character
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Link</mat-label>
+            <input matInput maxlength="200" inputmode="tel" placeholder="Link" formControlName="link" #linkInput>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="fill"  >
+            <mat-label>Descripcion</mat-label>
+            <textarea matInput placeholder="Example" formControlName="body" 
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"></textarea>
+          </mat-form-field>
+
+          <mat-radio-group aria-label="Is the project finished?" formControlName="finished">
+            <mat-radio-button [value]=true>Yes</mat-radio-button>
+            <mat-radio-button [value]=false>No</mat-radio-button>
+          </mat-radio-group>
+
+          
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
+        </div>
+    </form>
+    <div>{{ form.value | json }}</div>
+</ng-template>

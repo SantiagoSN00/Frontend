@@ -1,0 +1,68 @@
+<div class="container">
+    <div cdkDropList class="box parent-list" (cdkDropListDropped)="drop($event)">
+        <div class="box child-box" *ngFor="let edu of education; let i = index" [attr.data-index]="i" cdkDrag>
+            
+            <div *ngIf="!edits[i];else content">
+
+            <div *ngIf="!edits[i]" (click)="editFn($event)">
+
+                
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class = "selectable edit" fontIcon="edit"></mat-icon>
+            </div>
+                
+            <div *ngIf="!edits[i]" (click)="delete($event)">
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class = "selectable delete" fontIcon="delete_forever"></mat-icon>
+            </div>
+
+            <h2>{{edu.title}}</h2>
+        <h3>{{edu.start | date:'dd-MM-yyyy'}} / {{edu.end | date:'dd-MM-yyyy'}}</h3>
+        </div>
+    </div>
+        
+        <div *ngIf="!add;else content" class="box button-box">
+            <button mat-mini-fab class="add-button" color="primary" (click)="addNew()">+</button>
+        </div>
+
+      </div>
+</div>
+
+<ng-template #content>
+    <form [formGroup]="form" (ngSubmit)="saveDetails(form,$event)" class="form-container-views">
+        <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput maxlength="20" inputmode="tel" placeholder="Type name" formControlName="name" #nameInput>
+            <mat-hint>Max character 20: {{ nameInput.value.length }}/20</mat-hint>
+            <mat-error>Name is required</mat-error>
+            <mat-error *ngIf="form.controls['name'].errors?.['minlength']">
+                Please enter a character
+            </mat-error>
+        </mat-form-field>
+
+        <div class="date-container">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Start</mat-label>
+            <input matInput [max]=maxDate [matDatepicker]="pickerStart" formControlName="start" (ngModelChange)="setMinDate($event)">>
+            <mat-datepicker-toggle matSuffix [for]="pickerStart">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+           
+        </mat-form-field>
+
+        <h3>To</h3>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>End</mat-label>
+            <input matInput [min]=minDate  [matDatepicker]="pickerEnd" formControlName="end" (ngModelChange)="setMaxDate($event)">>
+            <mat-datepicker-toggle matSuffix [for]="pickerEnd">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+    </div>
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
+        </div>
+    </form>
+    <div>{{ form.value | json }}</div>
+</ng-template>

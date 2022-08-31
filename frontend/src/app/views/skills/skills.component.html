@@ -1,0 +1,53 @@
+<div class="container">
+    <div cdkDropList class="skills-container" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let skill of skills; let i = index" [attr.data-index]="i" cdkDrag class="position-relative">
+            <div *ngIf="!edits[i];else content">
+
+                <div *ngIf="!edits[i]" (click)="editFn($event)">
+    
+                    
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" class = "selectable edit" fontIcon="edit"></mat-icon>
+                </div>
+                    
+                <div *ngIf="!edits[i]" (click)="delete($event)">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" class = "selectable delete" fontIcon="delete_forever"></mat-icon>
+                </div>
+            
+        <app-circular-progress [value]=skill.value [type] = "skill.title" >
+            
+        </app-circular-progress>
+    </div>
+    </div>
+        
+        <div *ngIf="!add;else content" class="button-box">
+            <button mat-mini-fab class="add-button" color="primary" (click)="addNew()">+</button>
+        </div>
+    </div>
+    
+</div>
+
+<ng-template #content>
+    <form [formGroup]="form" (ngSubmit)="saveDetails(form,$event)">
+        <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput maxlength="20" inputmode="tel" placeholder="Type name" formControlName="name" #nameInput>
+            <mat-hint>Max character 20: {{ nameInput.value.length }}/20</mat-hint>
+            <mat-error>Name is required</mat-error>
+            <mat-error *ngIf="form.controls['name'].errors?.['minlength']">
+                Please enter a character
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Habilidad(1-100)</mat-label>
+            <input matInput [min]="1" [max]="100" type="number" formControlName="value" #valueInput>
+            <mat-error>Ingrese un valor valido (entre 1 y 100)</mat-error>
+        </mat-form-field>
+
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
+        </div>
+    </form>
+    <div>{{ form.value | json }}</div>
+</ng-template>

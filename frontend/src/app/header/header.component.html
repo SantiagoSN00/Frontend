@@ -1,0 +1,17 @@
+<nav class="navbar">
+    <div class="brand-title">Argentina Programa</div>
+    <a class="toggle-button" (click)="myList.classList.toggle('active')">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </a>
+    <div #myList class="navbar-links">
+        <ul ngbNav  [activeId]="route.fragment | async" class="nav-tabs">
+            <li [ngbNavItem]="link.fragment" *ngFor="let link of links">
+              <a ngbNavLink routerLink="/{{link.title}}" routerLinkActive="active" ariaCurrentWhenActive="page" >{{ link.title }}</a>
+            </li>
+          </ul>
+    </div>
+  </nav>
+
+
